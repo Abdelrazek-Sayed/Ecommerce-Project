@@ -1,0 +1,76 @@
+@extends('admin.layout.admin_master')
+
+
+@section('content')
+
+
+    <div class="container">
+        <div class="sl-pagebody">
+            <div class="sl-page-title">
+                <h5>Pending Orders</h5>
+            </div><!-- sl-page-title -->
+
+            <div class="card pd-20 pd-sm-40">
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>
+                                    {{ $error }}
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                <div class="card pd-20 pd-sm-40">
+
+                    <div class="table-wrapper">
+                        <table id="datatable1" class="table display responsive nowrap">
+                            <thead>
+                                <tr>
+
+                                    <th class="text-center" width="5%">Payment</th>
+                                    <th class="text-center">Transaction Id</th>
+                                    <th class="text-center" width="5%">Subtotal</th>
+                                    <th class="text-center" width="5%">Shipping</th>
+                                    <th class="text-center" width="5%">Total</th>
+                                    <th class="text-center" width="5%">Date</th>
+                                    <th class="text-center" width="5%">Status</th>
+                                    <th class="text-center" width="5%">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($orders as $order)
+                                    <tr>
+                                        <td class="text-center">{{ $order->payment_type }}</td>
+                                        <td class="text-center">{{ $order->balance_transaction }}</td>
+                                        <td class="text-center">{{ $order->subtotal }}</td>
+                                        <td class="text-center">{{ $order->shipping_charge }}</td>
+                                        <td class="text-center">{{ $order->total }}</td>
+                                        <td class="text-center">{{ $order->date }}</td>
+                                        @if ($order->return_order == 1)
+                                            <td class="text-center"><span class="badge badge-info">On Request</span></td>
+                                        @elseif ($order->return_order == 2)
+                                            <td class="text-center"><span class="badge badge-danger">Returned</span></td>
+
+                                        @endif
+
+                                        <td class="text-center">
+                                            <div class="form-group">
+                                                <a href="{{ route('accept.return', $order->id) }}"
+                                                    class="btn btn-warning btn-sm">Approve</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+
+                    </div><!-- table-wrapper -->
+                </div><!-- card -->
+            </div><!-- sl-pagebody -->
+        </div><!-- sl-mainpanel -->
+    </div><!-- container -->
+
+
+@endsection
